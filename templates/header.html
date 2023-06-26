@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <style>
+    nav ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 10px;
+    }
+
+    nav li {
+      display: inline;
+      margin-right: 10px;
+    }
+
+    .logout-button {
+    float: right;
+    }
+
+    .logout-button a {
+        display: inline-block;
+        padding: 8px 16px;
+        color: #fff;
+        border-radius: 4px;
+        text-decoration: none;
+    }
+
+    .logout-button a:hover {
+        background-color: #555;
+    }
+    </style>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+
+
+</head>
+<body>
+
+<div class="navbar">
+    <nav>
+        <ul>
+            <li><a href="/dashboard" class="{% if active_path == '/dashboard' %}active{% endif %}">Dashboard</a></li>
+            <li><a href="/home" class="{% if active_path == '/home' %}active{% endif %}">Home</a></li>
+            <li><a href="/about/" class="{% if active_path == '/about/' %}active{% endif %}">About</a></li>
+            <li class="logout-button"><a href="/logout">Logout</a></li>
+            <div class="clear"></div>
+        </ul>
+    </nav>
+</div>
+
+
+</body>
+</html>

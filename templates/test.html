@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <style>
+    /* Pagination Styles */
+    .pagination {
+        margin-top: 10px;
+    }
+
+    .pagination a {
+        color: #000;
+        padding: 8px 16px;
+        text-decoration: none;
+        transition: background-color 0.3s;
+    }
+
+    .pagination a:hover {
+        background-color: #ddd;
+    }
+
+    .pagination .current-page {
+        font-weight: bold;
+    }
+
+    /* Other Styles */
+    .fas {
+        margin-right: 5px;
+    }
+
+    .fa-check-circle {
+        color: green;
+    }
+
+    .fa-times-circle {
+        color: red;
+    }
+
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  th, td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+
+  th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+
+  .filter-container {
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
+        .filter-label {
+            margin-right: 10px;
+            margin-top: 20px;
+        }
+
+
+
+
+    </style>
+</head>
+<body>
+{% include 'header.html' %}
+<div class="filter-container">
+    <label for="brokerFilter" class="filter-label">Broker Linked:</label>
+    <select id="brokerFilter">
+        <option value="">All</option>
+        <option value="1">Linked</option>
+        <option value="0">Not Linked</option>
+    </select>
+
+    <label for="subscriptionFilter" class="filter-label">Subscription Active:</label>
+    <select id="subscriptionFilter">
+        <option value="">All</option>
+        <option value="1">Active</option>
+        <option value="0">Inactive</option>
+    </select>
+</div>
+
+<table id="userTable">
+    <thead>
+    <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>City</th>
+        <th>Broker Linked</th>
+        <th>Subscription Active</th>
+        <th>Send Notification</th>
+        <th>Trade History</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    {% for user in page_obj %}
+    <tr data-broker-linked="{{ user.broker_linked }}" data-subscription-active="{{ user.Subscription_Active }}">
+        <td>{{ user.fname }}</td>
+        <td>{{ user.lname }}</td>
+        <td>{{ user.phone }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.city }}</td>
+        <td>{% if user.broker_linked == 1 %}<i class="fas fa-check-circle fa-lg" style="color: green;"></i>{% else %}<i
+                class="fas fa-times-circle fa-lg" style="color: red;"></i>{% endif %}
+        </td>
+        <td>{% if user.Subscription_Active == 1 %}<i class="fas fa-check-circle fa-lg" style="color: green;"></i>{% else%}
+            <i class="fas fa-times-circle fa-lg" style="color: red;"></i>{% endif %}
+        </td>
+        <td><a href="{% url 'send_notification' %}?uid={{ user.uid }} &phone={{ user.phone }}">Send Notification</a>
+        </td>
+        <td><a href="{% url 'user_trade_history' %}?uid={{ user.uid }}">User Trades</a></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<!-- Pagination links -->
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current-page">{{ page_obj.number }}</span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+{% include 'footer.html' %}
+
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var brokerFilter = document.getElementById('brokerFilter');
+            var subscriptionFilter = document.getElementById('subscriptionFilter');
+            var userTable = document.getElementById('userTable');
+
+            brokerFilter.addEventListener('change', applyFilters);
+            subscriptionFilter.addEventListener('change', applyFilters);
+
+            function applyFilters() {
+                var brokerValue = brokerFilter.value;
+                var subscriptionValue = subscriptionFilter.value;
+
+                for (var i = 1; i < userTable.rows.length; i++) {
+                    var row = userTable.rows[i];
+                    var brokerLinkedCell = row.cells[5];
+                    var subscriptionCell = row.cells[6];
+
+                    var showRow = true;
+
+                    var brokerLinked = row.getAttribute('data-broker-linked');
+                    var subscriptionActive = row.getAttribute('data-subscription-active');
+
+                    if (brokerValue !== '' && brokerLinked !== brokerValue) {
+                        showRow = false;
+                    }
+
+                    if (subscriptionValue !== '' && subscriptionActive !== subscriptionValue) {
+                        showRow = false;
+                    }
+
+                    row.style.display = showRow ? '' : 'none';
+                }
+            }
+        });
+
+</script>
+</body>
+</html>

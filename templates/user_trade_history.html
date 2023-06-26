@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+    .trade {
+      display: block;
+    }
+
+    .notification {
+      display: none;
+    }
+
+    .button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .button:not(:last-child) {
+      margin-right: 10px;
+    }
+
+    .card {
+      background-color: #ffffff;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+
+    .card-body {
+      padding: 10px;
+    }
+
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      margin-right: -15px;
+      margin-left: -15px;
+    }
+
+    .col {
+      flex-basis: 0;
+      flex-grow: 1;
+      max-width: 100%;
+      padding-right: 15px;
+      padding-left: 15px;
+    }
+
+    table {
+      font-family: Arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+    }
+
+    thead th {
+      background-color: #f2f2f2;
+      border: 1px solid #ddd;
+      padding: 10px;
+    }
+
+    tbody td {
+      border: 1px solid #ddd;
+      padding: 10px;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    tbody tr:hover {
+      background-color: #f5f5f5;
+    }
+
+    .positive {
+      color: green;
+    }
+
+    .negative {
+      color: red;
+    }
+
+    .trade {
+      display: block;
+    }
+
+    .notification {
+      display: none;
+    }
+
+
+
+
+
+
+
+    </style>
+</head>
+<body>
+{% include 'header.html' %}
+<div class="card" style="width: 100%;">
+    <div class="card-body">
+        <div class="row">
+            <div class="col">
+                <p><strong>Name:</strong> {{user_object.first_name}} {{user_object.last_name}}</p>
+                <p><strong>Phone:</strong> {{user_object.phone}}</p>
+                <p><strong>Broker Balance:</strong>
+                    <td>{% if broker_balance.available_broker_balance > 1 %}
+                <h2 class="positive">{{ broker_balance.available_broker_balance }}</h2>{% else %}<h2 class="negative">
+                {{broker_balance.available_broker_balance }}</h2>{% endif %}</td></p>
+            </div>
+            <div class="col">
+                <p><strong>Email:</strong> {{user_object.email}}</p>
+                <p><strong>City:</strong> {{user_object.city}}</p>
+                <p><strong>Total PL:</strong>
+                    <td>{% if object.total_PL > 1 %}
+                <h2 class="positive">{{ object.total_PL }}</h2>{% else %}<h2 class="negative">{{ object.total_PL }}</h2>
+                {% endif %}</td></p>
+            </div>
+        </div>
+
+        <p>
+            <strong>Broker Status:</strong>
+            <td>
+                {% if broker_balance.isBrokerLinked == 1 %}
+        <h2 style="color: #008000;">Broker Linked &#128578;</h2>
+        {% elif broker_balance.isBrokerLinked == 0 %}
+        <h2 style="color: #cc0000;">Broker Not Linked &#128532;</h2>
+        {% else %}
+        <h2 style="color: #ff6600;">Invalid Credentials &#128545;</h2>
+        {% endif %}
+        </td>
+        </p>
+
+    </div>
+</div>
+
+<center>
+    <button onclick="toggleVisibility('trade')" class="button">Trade</button>
+    <button onclick="toggleVisibility('notification')" class="button">Notification</button>
+</center>
+
+<div id="tradeDiv" class="trade">
+    <table>
+        <thead>
+        <tr>
+            <th>Order Name</th>
+            <th>Buy Price</th>
+            <th>Sell Price</th>
+            <th>Trade Time</th>
+            <th>Price Difference</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in object.trade_list %}
+        <tr>
+            <td>{{ item.order_name }}</td>
+            <td>{{ item.buy_price }}</td>
+            <td>{{ item.sell_price }}</td>
+            <td>{{ item.trade_time }}</td>
+            <td>{% if item.PL > 1 %}<h1 class="positive">{{ item.PL }}</h1>{% else %}<h1 class="negative">{{item.PL}}</h1>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div id="notificationDiv" class="notification">
+    <table>
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Created</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in notifications %}
+        <tr>
+            <td>{{ item.title }}</td>
+            <td>{{ item.description }}</td>
+            <td>{{ item.type }}</td>
+            <td>{{ item.created }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% include 'footer.html' %}
+</body>
+<script>
+    function toggleVisibility(divId) {
+      var tradeDiv = document.getElementById('tradeDiv');
+      var notificationDiv = document.getElementById('notificationDiv');
+
+      if (divId === 'trade') {
+        tradeDiv.style.display = 'block';
+        notificationDiv.style.display = 'none';
+      } else if (divId === 'notification') {
+        tradeDiv.style.display = 'none';
+        notificationDiv.style.display = 'block';
+      }
+    }
+
+
+
+</script>
+</html>

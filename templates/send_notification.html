@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Send Notification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical;
+        }
+
+        button[type="submit"] {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        #whatsapp-btn {
+          padding: 10px 20px;
+          font-size: 16px;
+          background-color: green;
+          color: white;
+          border: none;
+          cursor: pointer;
+        }
+
+        .input-field {
+          padding: 10px 20px;
+          font-size: 16px;
+          background-color: skyblue;
+          color: white;
+          border: none;
+          cursor: pointer;
+        }
+
+
+    </style>
+</head>
+<body class="body">
+{% include 'header.html' %}
+
+<center><h1>Send Notification</h1></center>
+
+<form action="send_notification" method="post">
+
+    {% csrf_token %}
+    {% if error %}
+    <div class="alert alter-danger" role="alert">
+        Please fill the Field
+    </div>
+    {% endif %}
+
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" required><br><br>
+
+
+    <label for="body">Body:</label>
+    <textarea id="body" name="body" rows="4" required></textarea><br><br>
+    <input type="hidden" name="uid" value="{{ uid }}">
+    <input type="hidden" name="phone" value="{{ phone }}">
+
+    <center>
+        <input type="submit" value="Submit" class="input-field">
+        <a href="{% url 'send_notification' %}?uid={{uid}} &phone={{phone}}"><input type="button" id="whatsapp-btn"
+                                                                                    value="whatsapp"></a>
+
+    </center>
+</form>
+{% include 'footer.html' %}
+
+</body>
+<script>
+        function validateForm() {
+            var title = document.getElementById('title').value;
+            var body = document.getElementById('body').value;
+
+            if (title.trim() === '' && body.trim() === '') {
+                alert('Please enter a title and body for the message.');
+                return false;
+            }
+
+            if (title.trim() === '') {
+                alert('Please enter a title for the message.');
+                return false;
+            }
+
+            if (body.trim() === '') {
+                alert('Please enter a body for the message.');
+                return false;
+            }
+
+            return true;
+        }
+
+        document.getElementById('whatsapp-btn').addEventListener('click', function() {
+            var title = document.getElementById('title').value;
+            var body = document.getElementById('body').value;
+            var phoneNumber = "{{ phone }}";
+            var url = `https://web.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(`${title}\n\n${body}`)}`;
+
+            if (title.trim() === '' && body.trim() === '') {
+                alert('Please enter a title and body for the message.');
+            } else if (title.trim() === '') {
+                alert('Please enter a title for the message.');
+            } else if (body.trim() === '') {
+                alert('Please enter a body for the message.');
+            } else {
+                window.open(url, '_blank');
+            }
+        });
+
+
+</script>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <style>
+       .dashboard {
+          width: 1000;
+          margin: 0 auto;
+          padding: 10px;
+          border-radius: 5px;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          grid-gap: 10px;
+        }
+
+       .stat {
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          padding: 5px;
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          transition: background-color 0.3s ease;
+          cursor: pointer;
+          height: 200px;
+        }
+
+       .stat:hover {
+          background-color: #dcdcdc;
+        }
+
+       .stat h3 {
+          font-size: 20px;
+          font-weight: bold;
+          color: #000;
+          margin-bottom: 5px;
+        }
+
+        .stat h5 {
+          font-size: 15px;
+          font-weight: bold;
+          color: #00b300;
+          display: flex;
+<!--          margin-bottom: 5px;-->
+          justify-content: center;
+
+
+        }
+
+       .stat .value {
+          font-size: 44px;
+          font-weight: bold;
+          color: #00b300;
+          flex-grow: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+    </style>
+</head>
+<body>
+{% include 'header.html' %}
+<div class="dashboard">
+    <div class="stat">
+        <h3>Total Users</h3>
+        <span class="value">{{ object.total_user_count }}</span>
+    </div>
+    <div class="stat">
+        <h3>Users with Linked Broker Account</h3>
+        <span class="value">{{ object.total_user_broker_linked }}</span>
+    </div>
+    <div class="stat">
+        <h3>Users with Subscription</h3>
+        <span class="value">{{ object.total_user_subscription_active }}</span>
+    </div>
+    <div class="stat">
+        <h3>Total Trades Today</h3>
+        <span class="value">From Algo</span>
+    </div>
+    <div class="stat">
+        <h3>Users Who Traded Today</h3>
+        <span class="value">{{ object.today_traded_users_count }}</span>
+    </div>
+    <div class="stat">
+        <h3>Users Who Missed Trades Today</h3>
+        <span class="value">{{ object.today_tradedMissed_users_count }}</span>
+    </div>
+    <div class="stat">
+        <h3>Total Profit per Lot Today</h3>
+        {% for trade in object.trades_with_profit_per_lot %}
+        <h5>{{ trade.trade_name }} : {{ trade.profit_per_lot }}</h5>
+        {% endfor %}
+    </div>
+    <div class="stat">
+        <h3>Total Today PL</h3>
+        <span class="value">{{object.total_PL}}</span>
+    </div>
+    <div class="stat">
+        <h3>New Users Registered Today</h3>
+        <span class="value">{{ object.new_users_today }}</span>
+    </div>
+    <div class="stat">
+        <h3>New Broker Linked Today</h3>
+        <span class="value">{{ object.new_broker_linked_today }}</span>
+    </div>
+    <div class="stat">
+        <h3>New Subscriptions Added Today</h3>
+        <span class="value">{{ object.new_subscriptions_today }}</span>
+    </div>
+    <div class="stat">
+        <h3>Total Revenue Generated Today</h3>
+        <span class="value">{{ total_revenue_today }}</span>
+    </div>
+</div>
+
+{% include 'footer.html' %}
+</body>
+</html>

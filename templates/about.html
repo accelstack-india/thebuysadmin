@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>About Us</title>
+    <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f2f2f2;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    </style>
+</head>
+<body>
+{% include 'header.html' with me="REGISTER" sponsor="CONTACT" %}
+
+<header>
+    <h1>About Us</h1>
+</header>
+
+<div class="container">
+    <h1>Welcome to our website!</h1>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tristique ante ac faucibus ultrices. Sed eget
+        convallis tellus. Nulla facilisi. In hac habitasse platea dictumst. Proin euismod sagittis turpis vitae
+        laoreet.</p>
+
+    <p>Nullam vehicula, justo id fringilla laoreet, purus purus congue dui, non venenatis nisl dolor eu ex. Ut laoreet,
+        neque a rhoncus tempor, lectus enim efficitur magna, id interdum lectus neque at urna.</p>
+
+    <p>Sed pellentesque elit ac arcu congue fermentum. Morbi sed mauris efficitur, eleifend nunc eget, vestibulum lorem.
+        Donec ut dolor et dolor fringilla vulputate vel vel nisi.</p>
+</div>
+{% include 'footer.html' %}
+</body>
+</html>

@@ -1,0 +1,63 @@
+<html>
+<header>
+    <style>
+    .input-field {
+        padding: 10px;
+        margin: 5px;
+    }
+
+    .center-div {
+      width: 300px;
+      height: 370px;
+      background-color: lightgray;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .header{
+        justify-content: center;
+        align-items: center;
+        display: flex;
+
+      }
+
+
+
+    </style>
+</header>
+
+<body>
+
+
+<h3 class="header">APPISODE REGISTER PAGE</h3>
+<div class="center-div">
+    <form action="register" method="post">
+
+        {% csrf_token %}
+        {% if error %}
+        <div class="alert alter-danger" role="alert">
+            Please fill the Field
+        </div>
+        {% endif %}
+        <input type="text" id="fname" name="fname" class="input-field" placeholder="firstname" required><br>
+
+        <input type="text" id="lname" name="lname" class="input-field" placeholder="lastname" required><br>
+
+        <input type="email" id="email" name="email" class="input-field" placeholder="email"><br>
+
+        <input type="text" id="phone" name="phone" class="input-field" placeholder="phone" maxlength="10"><br>
+
+        <input type="int" id="age" name="age" class="input-field" placeholder="age" maxlength="2"><br>
+
+        <input type="password" id="password" name="password" class="input-field" placeholder="password"><br>
+
+        <input type="submit" value="Submit" class="input-field">
+
+        <button class="input-field"><a href="/">Signup</a></button>
+    </form>
+</div>
+{% include 'footer.html' %}
+
+</body>
+</html>
